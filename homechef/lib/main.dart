@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:homechef/views/home.dart';
 import 'package:homechef/views/login.dart';
-import 'package:homechef/views/search_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  SearchScreen(),
+      home:  const Home(),
     );
   }
 }
