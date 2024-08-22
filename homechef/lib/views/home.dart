@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
+import 'package:homechef/views/busqueda.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -12,6 +13,12 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Home Chef"),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen(recetaFProvider: recetas)) );//esta linea da error 
+          },
+          icon: const Icon(Icons.search))
+        ],
       ),
       body: FutureBuilder(
           future: recetas.getRecetas(),
