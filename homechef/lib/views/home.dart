@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
 import 'package:homechef/views/busqueda.dart';
+import 'package:homechef/views/detalle.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -50,6 +51,9 @@ class Home extends StatelessWidget {
                   return ListTile(
                     title: Text(receta.nombre),
                     subtitle: Text(receta.tipo),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> DetalleRecetaScreen(receta: receta)));
+                    },
                   );
                 });
           }),

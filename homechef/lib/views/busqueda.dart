@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
+import 'package:homechef/views/detalle.dart';
+import 'package:homechef/Widgets/textform.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -9,6 +11,7 @@ class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key, required this.recetaFProvider}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _SearchScreenState createState() => _SearchScreenState();
 }
 
@@ -51,6 +54,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: ListTile(
                             title: Text(receta.nombre),
                             subtitle: Text(receta.tipo),
+                            onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> DetalleRecetaScreen(receta: receta)));
+                    },
                           ),
                         );
                       },
