@@ -53,7 +53,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Image.asset('assets/404.png'),
             );
           }
 

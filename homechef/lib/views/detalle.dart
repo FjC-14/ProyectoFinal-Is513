@@ -74,12 +74,8 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
                       if (loadingProgress == null) {
                         return child;
                       } else {
-                        return Center(
-                          child: Image.asset(
-                            'assets/loading.gif',
-                            width: 100,
-                            height: 100,
-                          ),
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       }
                     },

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FavoritosManager {
   static const String favoritosKey = 'favoritos';
 
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<List<String>> getFavoritos() async {
     final SharedPreferences prefs = await _prefs;

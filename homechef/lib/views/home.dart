@@ -4,6 +4,8 @@ import 'package:homechef/models/receta_f.dart';
 import 'package:homechef/views/busqueda.dart';
 import 'package:homechef/views/detalle.dart';
 import 'package:homechef/views/favoritos.dart';
+import 'package:homechef/views/planificador.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,7 +29,7 @@ class _HomeState extends State<Home> {
     Widget currentScreen;
     switch (_selectedIndex) {
       case 1:
-        currentScreen = const FavoritosScreen(); // Pantalla de favoritos
+        currentScreen = const FavoritosScreen();
         break;
       case 2:
         currentScreen = PlanificadorDeComidas(recetaProvider: recetas);
@@ -44,7 +46,7 @@ class _HomeState extends State<Home> {
               }
               if (snapshot.hasError) {
                 return Center(
-                  child: Text('Error: ${snapshot.error}'),
+                  child: Image.asset('assets/404.png'),
                 );
               }
               if (snapshot.data!.isEmpty) {
@@ -132,10 +134,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favoritos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Otra función',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.restaurant_menu),
