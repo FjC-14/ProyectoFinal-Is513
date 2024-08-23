@@ -6,6 +6,7 @@ class Receta {
     String descripcion;
     String tipo;
     List<String> ingredientes;
+    List <String> preparacion;
 
     Receta({
         required this.id,
@@ -15,6 +16,7 @@ class Receta {
         required this.descripcion,
         required this.tipo,
         required this.ingredientes,
+        required this.preparacion,
     });
 
     factory Receta.fromJson(Map<String, dynamic> json) => Receta(
@@ -25,6 +27,7 @@ class Receta {
         descripcion: json["descripcion"],
         tipo: json["tipo"],
         ingredientes: List<String>.from(json['ingredientes']?? []),
+        preparacion: List<String>.from(json['preparacion']?? [])
     );
 
     Map<String, dynamic> toJson() => {
@@ -35,5 +38,6 @@ class Receta {
         "descripcion": descripcion,
         "tipo": tipo,
         "ingredientes": ingredientes,
+        "preparacion": preparacion,
     };
 }
