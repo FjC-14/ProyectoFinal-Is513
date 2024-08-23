@@ -3,7 +3,7 @@ import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
 import 'package:homechef/views/busqueda.dart';
 import 'package:homechef/views/detalle.dart';
-import 'package:homechef/views/favoritos.dart'; 
+import 'package:homechef/views/favoritos.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,82 +27,83 @@ class _HomeState extends State<Home> {
     Widget currentScreen;
     switch (_selectedIndex) {
       case 1:
-        currentScreen = const FavoritosScreen();  // Pantalla de favoritos
+        currentScreen = const FavoritosScreen(); // Pantalla de favoritos
         break;
       case 2:
-        currentScreen =const Placeholder();  // Placeholder para la tercera pantalla
+        currentScreen = PlanificadorDeComidas(recetaProvider: recetas);
         break;
       default:
         currentScreen = FutureBuilder(
-          future: recetas.getRecetas(),
-          builder: (BuildContext context, AsyncSnapshot<List<Receta>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
-            if (snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text('No hay Datos'),
-              );
-            }
+            future: recetas.getRecetas(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Receta>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              }
+              if (snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text('No hay Datos'),
+                );
+              }
 
-            final recetas = snapshot.data!;
+              final recetas = snapshot.data!;
 
-            return ListView.builder(
-                itemCount: recetas.length,
-                itemBuilder: (context, index) {
-                  final receta = recetas[index];
+              return ListView.builder(
+                  itemCount: recetas.length,
+                  itemBuilder: (context, index) {
+                    final receta = recetas[index];
 
-                  return ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        receta.imagen,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          } else {
-                            return const SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
+                    return ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          receta.imagen,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.error,
+                              color: Colors.red,
+                              size: 50,
                             );
-                          }
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 50,
-                          );
-                        },
+                          },
+                        ),
                       ),
-                    ),
-                    title: Text(receta.nombre),
-                    subtitle: Text(receta.tipo),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetalleRecetaScreen(receta: receta)),
-                      );
-                    },
-                  );
-                });
-          });
+                      title: Text(receta.nombre),
+                      subtitle: Text(receta.tipo),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DetalleRecetaScreen(receta: receta)),
+                        );
+                      },
+                    );
+                  });
+            });
     }
 
     return Scaffold(
@@ -135,6 +136,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Otra función',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu),
+            label: 'Planificador',
           ),
         ],
         currentIndex: _selectedIndex,
