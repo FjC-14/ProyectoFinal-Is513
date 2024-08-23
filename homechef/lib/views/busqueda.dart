@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
 import 'package:homechef/views/detalle.dart';
-//import 'package:homechef/Widgets/textform.dart';
-
 
 class SearchScreen extends StatefulWidget {
   final RecetaFProvider recetaFProvider;
@@ -31,8 +29,9 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Buscar por nombre, tipo  o ingredientes',
+                labelText: 'Buscar por nombre, tipo o ingredientes',
                 border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
               ),
               onChanged: (query) {
                 setState(() {
@@ -50,43 +49,57 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         final receta = _filteredRecetas[index];
                         return Card(
-                          margin: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    receta.imagen,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return const SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Center(
-                            child: CircularProgressIndicator(),
+                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        );
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.error,
-                        color: Colors.red,
-                        size: 50,
-                      );
-                    },
-                  ),
-                ),
-                            title: Text(receta.nombre),
-                            subtitle: Text(receta.tipo),
-                            onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> DetalleRecetaScreen(receta: receta)));
-                    },
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(8),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: SizedBox(
+                                width: 80,
+                                height: 80,
+                                child: Image.network(
+                                  receta.imagen,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (BuildContext context, Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                      size: 50,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              receta.nombre,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            subtitle: Text(
+                              receta.tipo,
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.grey),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetalleRecetaScreen(receta: receta)),
+                              );
+                            },
                           ),
                         );
                       },

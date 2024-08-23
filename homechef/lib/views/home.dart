@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/models/receta_f.dart';
-import 'package:homechef/views/busqueda.dart';
+import 'package:homechef/providers/receta_f_provider.dart';
 import 'package:homechef/views/detalle.dart';
 import 'package:homechef/views/favoritos.dart';
 import 'package:homechef/views/planificador.dart';
-
+import 'package:homechef/views/busqueda.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -58,43 +57,58 @@ class _HomeState extends State<Home> {
               final recetas = snapshot.data!;
 
               return ListView.builder(
-                  itemCount: recetas.length,
-                  itemBuilder: (context, index) {
-                    final receta = recetas[index];
+                itemCount: recetas.length,
+                itemBuilder: (context, index) {
+                  final receta = recetas[index];
 
-                    return ListTile(
+                  return Card(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(8),
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          receta.imagen,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return const SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Center(
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: Image.network(
+                            receta.imagen,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
                                   child: CircularProgressIndicator(),
-                                ),
+                                );
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                                size: 50,
                               );
-                            }
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.error,
-                              color: Colors.red,
-                              size: 50,
-                            );
-                          },
+                            },
+                          ),
                         ),
                       ),
-                      title: Text(receta.nombre),
-                      subtitle: Text(receta.tipo),
+                      title: Text(
+                        receta.nombre,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      subtitle: Text(
+                        receta.tipo,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey),
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -103,14 +117,19 @@ class _HomeState extends State<Home> {
                                   DetalleRecetaScreen(receta: receta)),
                         );
                       },
-                    );
-                  });
+                    ),
+                  );
+                },
+              );
             });
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Chef"),
+        title: Text(
+          "Home Chef",
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
         centerTitle: true,
         actions: [
           IconButton(

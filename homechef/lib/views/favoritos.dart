@@ -28,9 +28,9 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
 
     for (String id in favoritosIds) {
       final recetasData = await _recetaProvider.getRecetas();
-      final receta = recetasData.firstWhere((receta) => receta.id == id,);
+      final receta = recetasData.firstWhere((receta) => receta.id == id);
       recetas.add(receta);
-        }
+    }
 
     return recetas;
   }
@@ -46,8 +46,8 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
         future: _favoritos,
         builder: (BuildContext context, AsyncSnapshot<List<Receta>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  Center(
-              child: Image.asset('assets/loaading.gif',),
+            return Center(
+              child: Image.asset('assets/loaading.gif'),
             );
           }
 
@@ -70,51 +70,60 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
             itemBuilder: (context, index) {
               final receta = recetas[index];
 
-              return ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    receta.imagen,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return  SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Center(
-                            child: Image.asset(
-                              'assets/loaading.gif',
-
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.error,
-                        color: Colors.red,
-                        size: 50,
-                      );
-                    },
-                  ),
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text(receta.nombre),
-                subtitle: Text(receta.tipo),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DetalleRecetaScreen(
-                              receta: receta,
-                            )),
-                  );
-                },
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(8),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: Image.network(
+                        receta.imagen,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 50,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    receta.nombre,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    receta.tipo,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.grey),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetalleRecetaScreen(
+                                receta: receta,
+                              )),
+                    );
+                  },
+                ),
               );
             },
           );
